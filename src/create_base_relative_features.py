@@ -156,18 +156,35 @@ def main():
     agg_stats = FeatureEngineer.create_aggregated_window_stats(window_diff)
     print(f"   Added {len(agg_stats.columns)} aggregated statistics")
     
-    print("\n5. Combining relative features...")
+    print("\n5. Extracting aggregate behavioral features...")
+    # Get all non-response-specific features (these are aggregate features we want to keep)
+    # Exclude metadata columns that are already in base.csv
+    metadata_cols = ['comparison_type', 'task_id', 'user_query', 'llm_name_1', 'llm_name_2', 
+                     'llm_response_1', 'llm_response_2', 'likert_1', 'likert_2', 'preference',
+                     'normalized_likert_1', 'normalized_likert_2', 'binary_preference']
+    
+    aggregate_feature_cols = [col for col in extracted_df.columns 
+                              if not col.startswith('response_A_') 
+                              and not col.startswith('response_B_')
+                              and col not in metadata_cols
+                              and col not in ['query_id', 'user_id']]
+    
+    aggregate_features = extracted_df[aggregate_feature_cols]
+    print(f"   Keeping {len(aggregate_features.columns)} aggregate behavioral features")
+    
+    print("\n6. Combining all features...")
     relative_features = pd.concat([
         extracted_df[['query_id', 'user_id']],
         diff_features,
         ratio_features,
         window_diff,
-        agg_stats
+        agg_stats,
+        aggregate_features
     ], axis=1)
     
     print(f"   Total relative features created: {len(relative_features.columns) - 2}")
     
-    print("\n6. Merging with base...")
+    print("\n7. Merging with base...")
     base_df_renamed = base_df.rename(columns={'query_ID': 'query_id'})
     
     merged_df = base_df_renamed.merge(
@@ -181,7 +198,7 @@ def main():
     output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+relative_features.csv'
     merged_df.to_csv(output_path, index=False)
     
-    print(f"\n7. Saved to: {output_path}")
+    print(f"\n8. Saved to: {output_path}")
     print(f"   Final shape: {merged_df.shape}")
     
     print("\n" + "=" * 70)
