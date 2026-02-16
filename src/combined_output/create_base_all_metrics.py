@@ -1,12 +1,12 @@
 import pandas as pd
 from pathlib import Path
 
-base_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
+base_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base.csv'
 base_df = pd.read_csv(base_path)
 
 print(f"Base CSV shape: {base_df.shape}")
 
-all_metrics_path = Path(__file__).resolve().parent.parent / 'input' / 'all_metrics.csv'
+all_metrics_path = Path(__file__).resolve().parent.parent.parent / 'input' / 'all_metrics.csv'
 all_metrics_df = pd.read_csv(all_metrics_path)
 
 print(f"All Metrics CSV shape: {all_metrics_df.shape}")
@@ -38,7 +38,7 @@ print(f"Rows in base: {len(base_df)}")
 print(f"Rows in all_metrics: {len(all_metrics_df)}")
 print(f"Rows in merged: {len(merged_df)}")
 
-output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+all_metrics.csv'
+output_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+all_metrics.csv'
 merged_df.to_csv(output_path, index=False)
 
 print(f"\nBase+All Metrics CSV created")

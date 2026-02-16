@@ -4,7 +4,7 @@ from pathlib import Path
 MODE = 'top_n'
 TOP_N = 5
 
-base_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
+base_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base.csv'
 df = pd.read_csv(base_path)
 
 print(f"Base CSV shape: {df.shape}")
@@ -37,7 +37,7 @@ else:
 
 df = df.drop(columns=['user_id'])
 print(f"\nDropped original user_id column")
-output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+user_specific.csv'
+output_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+user_specific.csv'
 df.to_csv(output_path, index=False)
 
 print(f"\nBase+User Specific CSV created with shape: {df.shape}")

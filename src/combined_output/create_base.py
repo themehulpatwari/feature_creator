@@ -8,7 +8,7 @@ bad_workers = ['A1AYL5V5GI9HC1', 'A1CMJNN1QQKLU8', 'A1DLZK8TZJ7ESF', 'A1HQGU5SA9
                'A3EFKBV6W73WTX', 'A3I8V1SR4ZGLCI', 'A3PJ51GS2AKBO6', 'A3U042Q64BVD6G', 
                'A3UWNTYN8750BT', 'AAGUHBMCOYB8J', 'AM0JKZVOEOTMA', 'AXRWAXX9EXR0Y']
 
-input_path = Path(__file__).resolve().parent.parent / 'input' / 'query_logs_table.csv'
+input_path = Path(__file__).resolve().parent.parent.parent / 'input' / 'query_logs_table.csv'
 df = pd.read_csv(input_path)
 
 print(f"Initial shape: {df.shape}")
@@ -44,7 +44,7 @@ cols = df.columns.tolist()
 cols.remove('comparison_type')
 df = df[['comparison_type'] + cols]
 
-output_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
+output_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base.csv'
 df.to_csv(output_path, index=False)
 
 print(f"\nBase CSV created with shape: {df.shape}")

@@ -132,11 +132,11 @@ def main():
     print("Creating Base + Relative Features")
     print("=" * 70)
     
-    base_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
+    base_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base.csv'
     base_df = pd.read_csv(base_path)
     print(f"\nBase CSV shape: {base_df.shape}")
     
-    extracted_path = Path(__file__).resolve().parent.parent / 'input' / 'extracted_features.csv'
+    extracted_path = Path(__file__).resolve().parent.parent.parent / 'input' / 'extracted_features.csv'
     extracted_df = pd.read_csv(extracted_path)
     print(f"Extracted features CSV shape: {extracted_df.shape}")
     
@@ -195,7 +195,7 @@ def main():
     
     print(f"   Merged shape: {merged_df.shape}")
     
-    output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+relative_features.csv'
+    output_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+relative_features.csv'
     merged_df.to_csv(output_path, index=False)
     
     print(f"\n8. Saved to: {output_path}")

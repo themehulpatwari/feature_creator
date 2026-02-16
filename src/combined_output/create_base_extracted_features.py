@@ -1,12 +1,12 @@
 import pandas as pd
 from pathlib import Path
 
-base_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
+base_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base.csv'
 base_df = pd.read_csv(base_path)
 
 print(f"Base CSV shape: {base_df.shape}")
 
-extracted_path = Path(__file__).resolve().parent.parent / 'input' / 'extracted_features.csv'
+extracted_path = Path(__file__).resolve().parent.parent.parent / 'input' / 'extracted_features.csv'
 extracted_df = pd.read_csv(extracted_path)
 
 print(f"Extracted features CSV shape: {extracted_df.shape}")
@@ -36,7 +36,7 @@ print(f"\nMerged CSV shape: {merged_df.shape}")
 print(f"Rows in base: {len(base_df)}")
 print(f"Rows in merged: {len(merged_df)}")
 
-output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+extracted_features.csv'
+output_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+extracted_features.csv'
 merged_df.to_csv(output_path, index=False)
 
 print(f"\nBase+Extracted Features CSV created")
