@@ -8,7 +8,7 @@
 
 ## Directory Structure
 
-### src/data_creators/
+### src/combined_output/
 Creates combined datasets (pairwise + pointwise) in `output/` folder:
 - **exclude_bad_workers.py**: Removes bad workers (24 worker IDs) from extracted_features.csv
 - **create_base.py**: Creates base.csv with one-hot encoded LLM names and comparison_type
@@ -17,9 +17,9 @@ Creates combined datasets (pairwise + pointwise) in `output/` folder:
 - **create_base_relative_features.py**: Creates derived features (differences, ratios, window stats)
 - **create_base_all_metrics.py**: Merges base with all_metrics
 - **create_base_extracted_all_metrics.py**: Combines all features, drops LLM name columns
-- **run_all.py**: Runs all data_creators scripts in order
+- **run_all.py**: Runs all combined_output scripts in order
 
-### src/create_individual_output/
+### src/individual_output/
 Splits combined datasets into separate pairwise/pointwise files in `pairwise_output/` and `pointwise_output/`:
 - **create_pairwise_base.py**: Filters pairwise data, creates binary_preference (1→0, 2→1)
 - **create_pointwise_base.py**: Filters pointwise data, uses likert_1 as target
@@ -36,10 +36,10 @@ Splits combined datasets into separate pairwise/pointwise files in `pairwise_out
 ### Option 1: Automated (Recommended)
 ```bash
 # Generate all combined datasets
-python src/data_creators/run_all.py
+python src/combined_output/run_all.py
 
 # Split into pairwise and pointwise datasets
-python src/create_individual_output/run_all.py
+python src/individual_output/run_all.py
 
 # Run models
 python models/pairwise_model/model_base_pairwise.py
@@ -49,19 +49,19 @@ python models/pointwise_model/model_base_pointwise.py
 ### Option 2: Individual Scripts
 ```bash
 # Step 1: Data creators
-python src/data_creators/exclude_bad_workers.py
-python src/data_creators/create_base.py
-python src/data_creators/create_base_user_specific.py
-python src/data_creators/create_base_extracted_features.py
-python src/data_creators/create_base_relative_features.py
-python src/data_creators/create_base_all_metrics.py
-python src/data_creators/create_base_extracted_all_metrics.py
+python src/combined_output/exclude_bad_workers.py
+python src/combined_output/create_base.py
+python src/combined_output/create_base_user_specific.py
+python src/combined_output/create_base_extracted_features.py
+python src/combined_output/create_base_relative_features.py
+python src/combined_output/create_base_all_metrics.py
+python src/combined_output/create_base_extracted_all_metrics.py
 
 # Step 2: Create individual outputs
-python src/create_individual_output/create_pairwise_base.py
-python src/create_individual_output/create_pointwise_base.py
-python src/create_individual_output/create_pairwise_base_user_specific.py
-python src/create_individual_output/create_pointwise_base_user_specific.py
+python src/individual_output/create_pairwise_base.py
+python src/individual_output/create_pointwise_base.py
+python src/individual_output/create_pairwise_base_user_specific.py
+python src/individual_output/create_pointwise_base_user_specific.py
 # ... (run other split scripts as needed)
 
 # Step 3: Run models on individual outputs
