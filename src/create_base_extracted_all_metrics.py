@@ -20,12 +20,9 @@ all_metrics_path = Path(__file__).resolve().parent.parent / 'input' / 'all_metri
 all_metrics_df = pd.read_csv(all_metrics_path)
 print(f"All Metrics CSV shape: {all_metrics_df.shape}")
 
-# Rename base columns to match others (lowercase)
 base_df_renamed = base_df.rename(columns={'query_ID': 'query_id'})
 
-# Step 1: Merge base with extracted_features
 print("\n1. Merging base with extracted features...")
-# Get columns from extracted that are not in base and not llm_name columns
 base_cols = set(base_df_renamed.columns.str.lower())
 extracted_cols_to_add = []
 for col in extracted_df.columns:
@@ -56,7 +53,6 @@ print(f"   Dropping {len(llm_cols)} LLM columns: {llm_cols}")
 merged_df = merged_df.drop(columns=llm_cols)
 print(f"   After dropping LLM columns: {merged_df.shape}")
 
-# Save result
 output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+extracted+all_metrics.csv'
 merged_df.to_csv(output_path, index=False)
 

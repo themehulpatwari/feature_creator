@@ -1,19 +1,15 @@
 import pandas as pd
 from pathlib import Path
 
-# Read base.csv
 base_path = Path(__file__).resolve().parent.parent / 'output' / 'base.csv'
 base_df = pd.read_csv(base_path)
 
 print(f"Base CSV shape: {base_df.shape}")
 
-# Read extracted_features.csv
 extracted_path = Path(__file__).resolve().parent.parent / 'input' / 'extracted_features.csv'
 extracted_df = pd.read_csv(extracted_path)
 
 print(f"Extracted features CSV shape: {extracted_df.shape}")
-
-# Get columns from extracted_features that are NOT in base
 base_cols = set(base_df.columns.str.lower())
 extracted_cols = set(extracted_df.columns)
 
@@ -25,15 +21,11 @@ for col in extracted_df.columns:
 
 print(f"\nColumns to add from extracted_features: {len(unique_extracted_cols)}")
 
-# Prepare extracted_df for merge - keep only query_id, user_id and unique columns
 merge_cols = ['query_id', 'user_id'] + unique_extracted_cols
 extracted_df_subset = extracted_df[merge_cols]
 
-# Merge base with extracted features
-# Note: base has 'query_ID' (uppercase) and extracted has 'query_id' (lowercase)
 base_df_renamed = base_df.rename(columns={'query_ID': 'query_id'})
 
-# Merge on query_id and user_id using inner join (intersection)
 merged_df = base_df_renamed.merge(
     extracted_df_subset,
     on=['query_id', 'user_id'],
@@ -44,7 +36,6 @@ print(f"\nMerged CSV shape: {merged_df.shape}")
 print(f"Rows in base: {len(base_df)}")
 print(f"Rows in merged: {len(merged_df)}")
 
-# Save to base+extracted_features.csv
 output_path = Path(__file__).resolve().parent.parent / 'output' / 'base+extracted_features.csv'
 merged_df.to_csv(output_path, index=False)
 
