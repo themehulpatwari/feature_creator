@@ -15,13 +15,21 @@ print(f"After filtering for pairwise: {df.shape}")
 df['binary_preference'] = df['preference'].map({1: 0, 2: 1})
 print(f"Created binary_preference column")
 
-# Drop specified columns
+# Drop specified metadata columns
 columns_to_drop = ['comparison_type', 'query_id', 'user_id', 'task_id', 
                    'likert_1', 'likert_2', 'preference', 'query_timestamp']
 
 # Only drop columns that actually exist
 columns_to_drop = [col for col in columns_to_drop if col in df.columns]
 df = df.drop(columns=columns_to_drop)
+
+# Drop columns that are entirely null (these are overall metrics not applicable to pairwise)
+null_cols = df.columns[df.isnull().all()].tolist()
+if null_cols:
+    print(f"\nDropping {len(null_cols)} columns that are entirely null:")
+    for col in null_cols:
+        print(f"  - {col}")
+    df = df.drop(columns=null_cols)
 
 print(f"\nDropped columns: {columns_to_drop}")
 print(f"Final shape: {df.shape}")
