@@ -146,6 +146,14 @@ def train_and_evaluate_model(X, y, config):
         'importance': rf.feature_importances_
     }).sort_values('importance', ascending=False)
     
+    # Save feature importance to CSV
+    import os
+    output_dir = 'feature_importance'
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = f'{output_dir}/importance_base_extracted_features_pairwise.csv'
+    feature_importance.to_csv(output_file, index=False)
+    print(f"\nFeature importance saved to: {output_file}")
+    
     # Categorize features by importance
     threshold = 0.05  # Features with >5% importance are considered important
     important = feature_importance[feature_importance['importance'] >= threshold]

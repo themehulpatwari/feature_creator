@@ -174,6 +174,14 @@ def train_and_evaluate_model(X, y, config):
         coefficients['abs_coefficient'] = coefficients['coefficient'].abs()
         coefficients = coefficients.sort_values('abs_coefficient', ascending=False)
         
+        # Save coefficients to CSV
+        import os
+        output_dir = 'feature_importance'
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = f'{output_dir}/coefficients_base_user_specific_pointwise.csv'
+        coefficients[['feature', 'coefficient', 'abs_coefficient']].to_csv(output_file, index=False)
+        print(f"\nCoefficients saved to: {output_file}")
+        
         # Categorize coefficients
         threshold = 0.1
         important = coefficients[coefficients['abs_coefficient'] >= threshold]

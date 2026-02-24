@@ -1,5 +1,6 @@
 """
 Pairwise Model Training Pipeline for Binary Preference Prediction
+Uses Important Features Dataset
 
 This script trains a Random Forest Classifier to predict binary_preference (0 vs 1)
 using cross-validation for evaluation.
@@ -27,7 +28,7 @@ CONFIG = {
     'RANDOM_SEED': 49,
     
     # Data paths
-    'INPUT_CSV': 'pairwise_output/base_pairwise.csv',
+    'INPUT_CSV': 'pairwise_output/important_features_pairwise.csv',
     
     # Cross-validation settings
     'CV_FOLDS': 5,
@@ -56,7 +57,7 @@ def set_random_seeds(seed):
 def load_and_prepare_data(filepath):
     """Load CSV and prepare features and target"""
     print("\n" + "="*80)
-    print("PAIRWISE MODEL (Random Forest Classifier)")
+    print("PAIRWISE MODEL - IMPORTANT FEATURES (Random Forest Classifier)")
     print("="*80)
     
     # Load data
@@ -137,7 +138,7 @@ def train_and_evaluate_model(X, y, config):
     import os
     output_dir = 'feature_importance'
     os.makedirs(output_dir, exist_ok=True)
-    output_file = f'{output_dir}/importance_base_pairwise.csv'
+    output_file = f'{output_dir}/importance_important_features_pairwise.csv'
     feature_importance.to_csv(output_file, index=False)
     print(f"\nFeature importance saved to: {output_file}")
     
@@ -177,7 +178,7 @@ def main():
     model = train_and_evaluate_model(X, y, CONFIG)
     
     print("\n" + "="*80)
-    print("PAIRWISE MODEL TRAINING COMPLETE")
+    print("PAIRWISE MODEL (IMPORTANT FEATURES) TRAINING COMPLETE")
     print("="*80 + "\n")
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 """
 Pointwise Model Training Pipeline for Likert Score Prediction
-Dataset: base+extracted+all_metrics (combines extracted features + Jeff's metrics)
+Uses Important Features Dataset
 
 This script trains a Ridge Regressor to predict likert_1 (1-5 scale)
 using cross-validation for evaluation.
@@ -29,20 +29,17 @@ CONFIG = {
     'RANDOM_SEED': 49,
     
     # Data paths
-    'INPUT_CSV': 'pointwise_output/base+extracted+all_metrics_pointwise.csv',
-    
-    # Feature engineering options
-    'INCLUDE_WINDOW_FEATURES': True,      # Include 200 window features (gaze/mouse_window_000-099)
+    'INPUT_CSV': 'pointwise_output/important_features_pointwise.csv',
     
     # Cross-validation settings
     'CV_FOLDS': 5,
     'CV_SCORING': ['neg_mean_squared_error', 'neg_mean_absolute_error', 'r2'],
     
-    # Ridge hyperparameters (stronger regularization for high-dim data)
+    # Ridge hyperparameters
     'RIDGE_PARAMS': {
-        'alpha': 10.0,              # Stronger regularization
+        'alpha': 1.0,
         'random_state': 31,
-        'max_iter': 2000            # More iterations for convergence
+        'max_iter': 1000
     },
 }
 
@@ -54,22 +51,15 @@ def set_random_seeds(seed):
     """Set all random seeds for reproducibility"""
     np.random.seed(seed)
     
-def load_and_prepare_data(filepath, config):
+def load_and_prepare_data(filepath):
     """Load CSV and prepare features and target"""
     print("\n" + "="*80)
-    print("POINTWISE MODEL (Ridge Regressor)")
-    print("Dataset: base+extracted+all_metrics")
+    print("POINTWISE MODEL - IMPORTANT FEATURES (Ridge Regressor)")
     print("="*80)
     
     # Load data
     df = pd.read_csv(filepath)
     print(f"Loaded data shape: {df.shape}")
-    
-    # Drop all-NA columns
-    na_cols = [col for col in df.columns if df[col].isna().all()]
-    if na_cols:
-        print(f"Dropping {len(na_cols)} all-NA columns")
-        df = df.drop(columns=na_cols)
     
     # Text columns to exclude
     text_columns = ['user_query', 'llm_response_1']
@@ -89,19 +79,11 @@ def load_and_prepare_data(filepath, config):
     feature_cols = [col for col in df.columns 
                    if col not in text_columns and col != target_column]
     
-    # Optionally exclude window features
-    if not config['INCLUDE_WINDOW_FEATURES']:
-        window_cols = [col for col in feature_cols if '_window_' in col]
-        feature_cols = [col for col in feature_cols if col not in window_cols]
-        print(f"Excluded {len(window_cols)} window features")
-    
     X = df[feature_cols].copy()
     y = df[target_column].copy()
     
-    # Handle any remaining NaN values in features
-    X = X.fillna(0)
-    
     print(f"Samples: {len(X)} | Features: {X.shape[1]}")
+    # print(f"Feature columns: {feature_cols}")
     print(f"Target distribution:\n{y.value_counts().sort_index()}")
     
     return X, y
@@ -193,7 +175,7 @@ def train_and_evaluate_model(X, y, config):
         import os
         output_dir = 'feature_importance'
         os.makedirs(output_dir, exist_ok=True)
-        output_file = f'{output_dir}/coefficients_base_extracted_all_metrics_pointwise.csv'
+        output_file = f'{output_dir}/coefficients_important_features_pointwise.csv'
         coefficients[['feature', 'coefficient', 'abs_coefficient']].to_csv(output_file, index=False)
         print(f"\nCoefficients saved to: {output_file}")
         
@@ -210,7 +192,7 @@ def train_and_evaluate_model(X, y, config):
         
         print(f"\nNot Important Coefficients (|coef| < {threshold}):")
         if len(not_important) > 0:
-            print(f"  {len(not_important)} features with |coefficient| < {threshold}")
+            print(not_important[['feature', 'coefficient']].to_string(index=False))
         else:
             print("  None")
     
@@ -227,13 +209,13 @@ def main():
     set_random_seeds(CONFIG['RANDOM_SEED'])
     
     # Load and prepare data
-    X, y = load_and_prepare_data(CONFIG['INPUT_CSV'], CONFIG)
+    X, y = load_and_prepare_data(CONFIG['INPUT_CSV'])
     
     # Train and evaluate model
     model, scaler = train_and_evaluate_model(X, y, CONFIG)
     
     print("\n" + "="*80)
-    print("POINTWISE MODEL TRAINING COMPLETE")
+    print("POINTWISE MODEL (IMPORTANT FEATURES) TRAINING COMPLETE")
     print("="*80 + "\n")
 
 if __name__ == "__main__":

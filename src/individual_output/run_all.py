@@ -15,11 +15,13 @@ SCRIPTS = [
     'create_pairwise_base_extracted_all_metrics.py',
     'create_pairwise_base_relative_features.py',
     'create_pairwise_base_user_specific.py',
+    'create_pairwise_important_features.py',
     'create_pointwise_base.py',
     'create_pointwise_base_all_metrics.py',
     'create_pointwise_base_extracted_features.py',
     'create_pointwise_base_extracted_all_metrics.py',
     'create_pointwise_base_user_specific.py',
+    'create_pointwise_important_features.py',
 ]
 
 def run_script(script_name):
