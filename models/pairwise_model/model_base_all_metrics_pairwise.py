@@ -122,7 +122,7 @@ def train_and_evaluate_model(X, y, config):
         if fold_num == 1:
             X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
             y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
-            print_fold_1_first_row(X_train, y_train, X_test, y_test, fold_num)
+            print_fold_1_first_row(X_train, y_train, X_test, y_test, fold_num, train_idx, test_idx)
             break
     
     # Perform cross-validation
