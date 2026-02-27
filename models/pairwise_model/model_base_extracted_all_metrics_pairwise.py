@@ -9,12 +9,21 @@ using cross-validation for evaluation.
 import pandas as pd
 import numpy as np
 import warnings
+import sys
+import os
+
+# Add project root to Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_validate, StratifiedKFold
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score, 
     roc_auc_score, confusion_matrix, classification_report
 )
+from utils.kfold_debug import print_fold_1_first_row
 
 warnings.filterwarnings('ignore')
 
@@ -122,6 +131,14 @@ def train_and_evaluate_model(X, y, config):
     
     # Cross-validation with stratified folds
     cv = StratifiedKFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+    
+    # Debug: Print fold 1 first row
+    for fold_num, (train_idx, test_idx) in enumerate(cv.split(X, y), 1):
+        if fold_num == 1:
+            X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
+            y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+            print_fold_1_first_row(X_train, y_train, X_test, y_test, fold_num)
+            break
     
     # Perform cross-validation
     cv_results = cross_validate(
