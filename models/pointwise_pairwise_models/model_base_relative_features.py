@@ -27,7 +27,7 @@ warnings.filterwarnings('ignore')
 
 CONFIG = {
     # Random states for reproducibility
-    'RANDOM_STATE': 31,
+    'RANDOM_STATE': 49,
     'RANDOM_SEED': 49,
     
     # Data paths
@@ -48,7 +48,7 @@ CONFIG = {
         'min_samples_split': 10,    # Higher to prevent overfitting
         'min_samples_leaf': 4,      # Higher to prevent overfitting
         'max_features': 'sqrt',     # Good default for high-dim data
-        'random_state': 31,
+        'random_state': 49,
         'n_jobs': -1
     },
 }

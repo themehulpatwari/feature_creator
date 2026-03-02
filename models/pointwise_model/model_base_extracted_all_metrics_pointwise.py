@@ -34,7 +34,7 @@ warnings.filterwarnings('ignore')
 
 CONFIG = {
     # Random states for reproducibility
-    'RANDOM_STATE': 31,
+    'RANDOM_STATE': 49,
     'RANDOM_SEED': 49,
     
     # Data paths
@@ -50,7 +50,7 @@ CONFIG = {
     # Ridge hyperparameters (stronger regularization for high-dim data)
     'RIDGE_PARAMS': {
         'alpha': 10.0,              # Stronger regularization
-        'random_state': 31,
+        'random_state': 49,
         'max_iter': 2000            # More iterations for convergence
     },
 }

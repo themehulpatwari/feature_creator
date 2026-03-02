@@ -33,7 +33,7 @@ warnings.filterwarnings('ignore')
 
 CONFIG = {
     # Random states for reproducibility
-    'RANDOM_STATE': 31,
+    'RANDOM_STATE': 49,
     'RANDOM_SEED': 49,
     
     # Data paths
@@ -50,7 +50,7 @@ CONFIG = {
         'min_samples_split': 5,
         'min_samples_leaf': 2,
         'max_features': 'sqrt',
-        'random_state': 31,
+        'random_state': 49,
         'n_jobs': -1
     },
 }

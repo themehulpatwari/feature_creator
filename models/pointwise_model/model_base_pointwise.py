@@ -33,7 +33,7 @@ warnings.filterwarnings('ignore')
 
 CONFIG = {
     # Random states for reproducibility
-    'RANDOM_STATE': 31,
+    'RANDOM_STATE': 49,
     'RANDOM_SEED': 49,
     
     # Data paths
@@ -46,7 +46,7 @@ CONFIG = {
     # Ridge hyperparameters
     'RIDGE_PARAMS': {
         'alpha': 1.0,
-        'random_state': 31,
+        'random_state': 49,
         'max_iter': 1000
     },
 }
