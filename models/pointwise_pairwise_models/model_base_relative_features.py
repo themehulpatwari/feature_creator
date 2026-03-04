@@ -12,7 +12,7 @@ This script trains:
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_validate, StratifiedKFold
+from sklearn.model_selection import cross_validate, KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score, 
@@ -140,7 +140,7 @@ def train_pairwise_model(X, y, config):
     rf = RandomForestClassifier(**config['RF_PARAMS'])
     
     # Cross-validation with stratified folds
-    cv = StratifiedKFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+    cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
     
     # Perform cross-validation
     cv_results = cross_validate(

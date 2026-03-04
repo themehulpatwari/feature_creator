@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import RidgeClassifier, Ridge
-from sklearn.model_selection import cross_validate, StratifiedKFold, KFold
+from sklearn.model_selection import cross_validate, KFold, KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score, 
@@ -210,7 +210,7 @@ def train_pairwise_model(X, y, config):
     rf = RandomForestClassifier(**config['RF_PARAMS'])
     
     # Cross-validation with stratified folds
-    cv = StratifiedKFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+    cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
     
     # Perform cross-validation
     cv_results = cross_validate(
@@ -269,7 +269,7 @@ def train_pointwise_model(X, y, config):
     # Initialize model
     if config['POINTWISE_MODEL_TYPE'] == 'classifier':
         model = RidgeClassifier(**config['RIDGE_PARAMS'])
-        cv = StratifiedKFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+        cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
         scoring = ['accuracy', 'precision_weighted', 'recall_weighted', 'f1_weighted']
     else:  # regressor
         model = Ridge(**config['RIDGE_PARAMS'])

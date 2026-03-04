@@ -17,7 +17,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_validate, StratifiedKFold
+from sklearn.model_selection import cross_validate, KFold
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score, 
     roc_auc_score, confusion_matrix, classification_report
@@ -111,7 +111,7 @@ def train_and_evaluate_model(X, y, config):
     rf = RandomForestClassifier(**config['RF_PARAMS'])
     
     # Cross-validation with stratified folds
-    cv = StratifiedKFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+    cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
     
     # Debug: Print fold 1 first row
     for fold_num, (train_idx, test_idx) in enumerate(cv.split(X, y), 1):
