@@ -25,9 +25,7 @@ if 'query_id' in df.columns:
 elif 'query_ID' in df.columns:
     columns_to_drop.append('query_ID')
 
-# Add user_id
-if 'user_id' in df.columns:
-    columns_to_drop.append('user_id')
+# Keep user_id in the output (removed from columns_to_drop)
 
 # Drop all llm_2_* columns
 llm_2_cols = [col for col in df.columns if col.startswith('llm_2_')]

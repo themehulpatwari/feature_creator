@@ -11,8 +11,8 @@ print(f"Initial shape: {df.shape}")
 df = df[df['comparison_type'] == 'pointwise'].copy()
 print(f"After filtering for pointwise: {df.shape}")
 
-# Drop specified columns
-columns_to_drop = ['comparison_type', 'query_id', 'user_id', 'task_id', 
+# Drop specified columns (keeping user_id)
+columns_to_drop = ['comparison_type', 'query_id', 'task_id', 
                    'query_timestamp', 'llm_response_2', 'likert_2', 'preference',
                    'normalized_likert_1', 'normalized_likert_2', 'binary_preference']
 

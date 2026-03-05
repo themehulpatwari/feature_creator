@@ -72,6 +72,9 @@ def load_and_prepare_data(filepath):
     # Text columns to exclude
     text_columns = ['user_query', 'llm_response_1']
     
+    # Non-feature columns to exclude (text + identifiers)
+    excluded_columns = text_columns + ['user_id']
+    
     # Target column
     target_column = 'likert_1'
     
@@ -85,7 +88,7 @@ def load_and_prepare_data(filepath):
     
     # Prepare features: exclude text columns and target
     feature_cols = [col for col in df.columns 
-                   if col not in text_columns and col != target_column]
+                   if col not in excluded_columns and col != target_column]
     
     X = df[feature_cols].copy()
     y = df[target_column].copy()
