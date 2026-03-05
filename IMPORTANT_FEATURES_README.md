@@ -114,3 +114,198 @@ Selected based on Random Forest feature importance and Logistic Regression coeff
 **Pointwise focuses on**: Temporal patterns during single response review, duration of engagement phases, specific moments in reading sequence
 
 Both retain LLM model information (which model generated responses) as this significantly affects predictions.
+
+# Feature Formulas
+
+## Pairwise Task Formulas
+
+### 3. Gaze Comparison Metrics
+
+**gaze_comparison_reviewing_time_ratio**
+```
+left_engaged_time_s / (right_engaged_time_s + 0.001)
+```
+
+**gaze_comparison_reviewing_time_diff**
+```
+left_engaged_time_s - right_engaged_time_s
+```
+
+**gaze_comparison_reviewing_activity_ratio**
+```
+left_active_ratio / (right_active_ratio + 0.001)
+```
+
+**gaze_comparison_reviewing_activity_diff**
+```
+left_active_ratio - right_active_ratio
+```
+
+### 4. Mouse Comparison Metrics
+
+**mouse_comparison_reviewing_time_ratio**
+```
+left_engaged_time_s / (right_engaged_time_s + 0.001)
+```
+
+**mouse_comparison_reviewing_time_diff**
+```
+left_engaged_time_s - right_engaged_time_s
+```
+
+**mouse_comparison_reviewing_activity_ratio**
+```
+left_active_ratio / (right_active_ratio + 0.001)
+```
+
+**mouse_comparison_reviewing_activity_diff**
+```
+left_active_ratio - right_active_ratio
+```
+
+Where:
+- `engaged_time_s` = Sum of intervals < INACTIVITY_THRESHOLD_MS when looking at text / 1000
+- `active_ratio` = engaged_time_s / reviewing_duration_s
+
+### 5. Response-Specific Gaze Features (Windows 006, 007, 008, 014)
+
+**{modality}_{side}_window_{NNN}**
+```
+mean(centre_idx / response_length) for data points in time window NNN
+```
+
+Window calculation:
+```
+time_span = max(rel_ts) - min(rel_ts)
+window_size = time_span / 100
+window_{i}_start = min(rel_ts) + i * window_size
+window_{i}_end = min(rel_ts) + (i + 1) * window_size
+```
+
+### 6. Response-Specific Mouse Features (Windows 000, 022, 031, 033, 037, 039, 099)
+
+Same formula as gaze windows (section 5).
+
+**mouse_normalized_char_position_variance**
+```
+variance([centre_idx / response_length for all looking data points])
+```
+
+### 7. Other
+
+**cross_modality_left_reviewing_duration_ratio_gaze_mouse**
+```
+gaze_left_reviewing_engaged_time_s / (mouse_left_reviewing_engaged_time_s + 0.001)
+```
+
+**response_B_response_length**
+```
+len(llm_response_2)
+```
+
+---
+
+## Pointwise Task Formulas
+
+### 3. Temporal Duration Metrics
+
+**gaze_reviewing_duration_s**
+```
+(reviewing_end_timestamp - reviewing_start_timestamp) / 1000
+```
+
+**gaze_active_time_reviewing_s**
+```
+reviewing_duration_s * reviewing_active_ratio
+```
+
+Where:
+```
+reviewing_active_ratio = 1 - mean(is_not_looking) for reviewing phase data
+```
+
+**gaze_thinking_time_s**
+```
+composing_duration_s * composing_thinking_ratio
+```
+
+Where:
+```
+composing_thinking_ratio = count(on_screen AND not_at_text) / total_composing_points
+```
+
+**gaze_offscreen_time_composing_s**
+```
+composing_duration_s * composing_offscreen_ratio
+```
+
+Where:
+```
+composing_offscreen_ratio = mean(is_not_looking) for composing phase data
+```
+
+**mouse_offscreen_time_composing_s**
+```
+Same as gaze_offscreen_time_composing_s but for mouse data
+```
+
+### 4. Cross-Modality Metrics
+
+**cross_modality_composing_activity_ratio_gaze_mouse**
+```
+gaze_composing_active_ratio / (mouse_composing_active_ratio + 0.001)
+```
+
+**mouse_reviewing_composing_activity_ratio**
+```
+mouse_reviewing_active_ratio / (mouse_composing_active_ratio + 0.001)
+```
+
+### 5. Gaze Window Features (20 windows)
+
+**response_A_gaze_window_{NNN}**
+```
+mean(centre_idx / response_length) for data points in time window NNN
+```
+
+Window calculation same as pairwise (section 5).
+
+### 6. Mouse Window Features (18 windows)
+
+**response_A_mouse_window_{NNN}**
+```
+Same formula as gaze windows
+```
+
+**response_A_mouse_normalized_char_position_variance**
+```
+variance([centre_idx / response_length for all looking data points])
+```
+
+### 7. High-Level Engagement
+
+**response_A_gaze_data_points**
+```
+count(all behavioral data points for this modality)
+```
+
+**response_A_gaze_normalized_avg_char_position**
+```
+mean([centre_idx / response_length for all looking data points])
+```
+
+---
+
+## Key Constants
+
+- **INACTIVITY_THRESHOLD_MS**: Maximum interval between consecutive points to count as continuous engagement (typically 1000-3000ms)
+- **NUM_TIME_WINDOWS**: 100 (windows indexed 000-099)
+- **EPSILON**: 0.001 (prevents division by zero in ratios)
+- **MAX_RATIO**: 100.0 (caps extreme ratio values)
+
+## Notes
+
+- All ratios use safe division: `numerator / (denominator + EPSILON)`
+- Ratios capped at MAX_RATIO to avoid extreme values
+- Timestamps in milliseconds, durations converted to seconds
+- Window features use normalized positions (0-1 scale) relative to response_length
