@@ -43,6 +43,7 @@ reviewing_active_ratio = Proportion of samples where user IS looking at screen d
 composing_active_ratio = Proportion of samples where user IS looking at screen during composing
 
 This one is a little wild (I am surprised it worked out well)
+
 'gaze_thinking_time_s': thinking_time_s = composing_duration_s * composing_thinking_ratio
 
 composing_duration_s = The total length of time (in seconds) that the composing phase lasts for this query
@@ -74,6 +75,7 @@ Result is a ratio between 0 and 1
 'response_B_gaze_overall_attention_ratio': below
 'response_A_mouse_overall_attention_ratio': below
 'response_B_mouse_overall_attention_ratio': below
+
 Count how many data points have the user actively looking at text (valid x, y, and centre_idx coordinates, not -1)
 overall_attention_ratio = len(looking_data) / len(data_points)
 
@@ -81,6 +83,7 @@ overall_attention_ratio = len(looking_data) / len(data_points)
 'response_B_gaze_normalized_avg_char_position': below
 'response_A_gaze_normalized_avg_char_position': below
 'response_B_mouse_normalized_avg_char_position': below
+
 The average normalized character position the user looked at while reading.
 
 'response_A_mouse_normalized_char_position_variance': The variance (spread) of normalized character positions the user looked at
