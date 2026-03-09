@@ -72,7 +72,7 @@ def load_and_prepare_data(filepath):
     print(f"Loaded data shape: {df.shape}")
     
     # Text columns to exclude
-    text_columns = ['user_query', 'llm_response_1']
+    text_columns = ['user_query', 'llm_response_1', 'query_id']
     
     # Target column
     target_column = 'likert_1'

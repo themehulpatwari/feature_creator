@@ -5,25 +5,25 @@ from pathlib import Path
 input_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+user_specific.csv'
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pointwise data only
 df = df[df['comparison_type'] == 'pointwise'].copy()
 print(f"After filtering for pointwise: {df.shape}")
 
-# Drop specified columns (handling both query_ID and query_id)
+# Drop specified columns
 columns_to_drop = ['comparison_type', 'task_id', 'likert_2', 
                    'preference', 'query_timestamp', 'llm_response_2']
 
-# Add query_ID or query_id (whichever exists)
-if 'query_id' in df.columns:
-    columns_to_drop.append('query_id')
-elif 'query_ID' in df.columns:
-    columns_to_drop.append('query_ID')
-
-# Add user_id
+# Add user_id (drop it for consistency with original behavior)
 if 'user_id' in df.columns:
     columns_to_drop.append('user_id')
+
+# Keep query_id in the output
 
 # Drop all llm_2_* columns
 llm_2_cols = [col for col in df.columns if col.startswith('llm_2_')]

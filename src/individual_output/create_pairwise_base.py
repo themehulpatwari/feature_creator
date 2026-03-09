@@ -8,6 +8,10 @@ if not input_path.exists():
 
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pairwise data only
@@ -19,19 +23,14 @@ df['binary_preference'] = df['preference'].map({1: 0, 2: 1})
 print(f"Created binary_preference column")
 
 # Drop specified columns
-# Note: handling both query_ID and query_id column names
 columns_to_drop = ['comparison_type', 'task_id', 'likert_1', 'likert_2', 
                    'preference', 'query_timestamp']
-
-# Add query_id or query_ID (whichever exists)
-if 'query_id' in df.columns:
-    columns_to_drop.append('query_id')
-elif 'query_ID' in df.columns:
-    columns_to_drop.append('query_ID')
 
 # Add user_id
 if 'user_id' in df.columns:
     columns_to_drop.append('user_id')
+
+# Keep query_id in the output
 
 # Only drop columns that actually exist
 columns_to_drop = [col for col in columns_to_drop if col in df.columns]

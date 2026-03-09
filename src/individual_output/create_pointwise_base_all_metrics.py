@@ -5,14 +5,18 @@ from pathlib import Path
 input_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+all_metrics.csv'
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pointwise data only
 df = df[df['comparison_type'] == 'pointwise'].copy()
 print(f"After filtering for pointwise: {df.shape}")
 
-# Drop specified columns (keeping user_id)
-columns_to_drop = ['comparison_type', 'query_id', 'task_id', 
+# Drop specified columns (keeping user_id and query_id)
+columns_to_drop = ['comparison_type', 'task_id', 
                    'likert_2', 'preference', 'query_timestamp', 'llm_response_2']
 
 # Drop all llm_2_* columns

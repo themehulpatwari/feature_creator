@@ -5,14 +5,18 @@ from pathlib import Path
 input_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+extracted+all_metrics.csv'
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pairwise data only
 df = df[df['comparison_type'] == 'pairwise'].copy()
 print(f"After filtering for pairwise: {df.shape}")
 
-# Drop specified columns
-columns_to_drop = ['comparison_type', 'query_id', 'user_id', 'task_id', 
+# Drop specified columns (keeping query_id)
+columns_to_drop = ['comparison_type', 'user_id', 'task_id', 
                    'query_timestamp', 'likert_1', 'likert_2', 'preference',
                    'normalized_likert_1', 'normalized_likert_2']
 

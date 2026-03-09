@@ -5,6 +5,10 @@ from pathlib import Path
 input_path = Path(__file__).resolve().parent.parent.parent / 'output' / 'base+user_specific.csv'
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pairwise data only
@@ -15,15 +19,9 @@ print(f"After filtering for pairwise: {df.shape}")
 df['binary_preference'] = df['preference'].map({1: 0, 2: 1})
 print(f"Created binary_preference column")
 
-# Drop specified columns (handling both query_ID and query_id)
+# Drop specified columns (keeping query_id)
 columns_to_drop = ['comparison_type', 'task_id', 'likert_1', 'likert_2', 
                    'preference', 'query_timestamp']
-
-# Add query_ID or query_id (whichever exists)
-if 'query_id' in df.columns:
-    columns_to_drop.append('query_id')
-elif 'query_ID' in df.columns:
-    columns_to_drop.append('query_ID')
 
 # Add user_id
 if 'user_id' in df.columns:

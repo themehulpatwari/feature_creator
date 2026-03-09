@@ -8,6 +8,10 @@ if not input_path.exists():
 
 df = pd.read_csv(input_path)
 
+# Standardize column name
+if 'query_ID' in df.columns:
+    df = df.rename(columns={'query_ID': 'query_id'})
+
 print(f"Initial shape: {df.shape}")
 
 # Filter for pointwise data only
@@ -15,17 +19,10 @@ df = df[df['comparison_type'] == 'pointwise'].copy()
 print(f"After filtering for pointwise: {df.shape}")
 
 # Drop specified columns
-# Note: handling both query_ID and query_id column names
 columns_to_drop = ['comparison_type', 'task_id', 'likert_2', 
                    'preference', 'query_timestamp', 'llm_response_2']
 
-# Add query_id or query_ID (whichever exists)
-if 'query_id' in df.columns:
-    columns_to_drop.append('query_id')
-elif 'query_ID' in df.columns:
-    columns_to_drop.append('query_ID')
-
-# Keep user_id in the output (removed from columns_to_drop)
+# Keep user_id and query_id in the output
 
 # Drop all llm_2_* columns
 llm_2_cols = [col for col in df.columns if col.startswith('llm_2_')]

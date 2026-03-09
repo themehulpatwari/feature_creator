@@ -75,7 +75,7 @@ def load_and_prepare_data(filepath):
     text_columns = ['user_query', 'llm_response_1']
     
     # Non-feature columns to exclude (text + identifiers)
-    excluded_columns = text_columns + ['user_id']
+    excluded_columns = text_columns + ['user_id', 'query_id']
     
     # Target column
     target_column = 'likert_1'
