@@ -1,3 +1,4 @@
+# Pairwise: 61 features for predicting binary_preference
 PAIRWISE_IMPORTANT_FEATURES = [
     'adjustment',
     'llm_1_claude-3-5-sonnet-20240620',
@@ -18,21 +19,21 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'total_entries_left',
     'total_entries_right',
     'cross_modality_left_reviewing_duration_ratio_gaze_mouse',
-
-
+    'gaze_comparison_reviewing_activity_ratio',
+    'gaze_comparison_reviewing_time_diff',
     'gaze_comparison_reviewing_time_ratio',
-
+    'gaze_left_max_char_position_reached',
     'gaze_left_reviewing_offscreen_ratio',
-
+    'gaze_right_max_char_position_reached',
     'gaze_right_reviewing_active_ratio',
     'gaze_right_reviewing_engaged_pct',
     'gaze_right_reviewing_offscreen_ratio',
-
+    'mouse_comparison_reviewing_activity_diff',
     'mouse_comparison_reviewing_activity_ratio',
-
+    'mouse_comparison_reviewing_time_diff',
     'mouse_comparison_reviewing_time_ratio',
     'mouse_left_reviewing_active_ratio',
-
+    'response_A_gaze_data_points',
     'response_A_gaze_focused_engagement_ratio',
     'response_A_gaze_overall_attention_ratio',
     'response_A_gaze_window_006',
@@ -43,7 +44,7 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'response_A_mouse_overall_attention_ratio',
     'response_A_mouse_window_000',
     'response_A_mouse_window_099',
-
+    'response_B_gaze_data_points',
     'response_B_gaze_focused_engagement_ratio',
     'response_B_gaze_normalized_avg_char_position',
     'response_B_gaze_overall_attention_ratio',
@@ -59,10 +60,10 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'response_B_mouse_window_033',
     'response_B_mouse_window_037',
     'response_B_mouse_window_039',
-    
+    'response_B_response_length',
 ]
 
-
+# Pointwise: 56 features for predicting likert_1
 POINTWISE_IMPORTANT_FEATURES = [
     'adjustment',
     'llm_1_claude-3-5-sonnet-20240620',
