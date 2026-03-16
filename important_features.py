@@ -25,7 +25,7 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'gaze_left_reviewing_offscreen_ratio',
 
     'gaze_right_reviewing_active_ratio',
-    'gaze_right_reviewing_engaged_pct',
+
     'gaze_right_reviewing_offscreen_ratio',
 
     'mouse_comparison_reviewing_activity_ratio',
