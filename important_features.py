@@ -18,21 +18,16 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'total_entries_left',
     'total_entries_right',
     'cross_modality_left_reviewing_duration_ratio_gaze_mouse',
-
-
     'gaze_comparison_reviewing_time_ratio',
-
     'gaze_left_reviewing_offscreen_ratio',
-
+    'gaze_left_reviewing_engaged_time_s',
     'gaze_right_reviewing_active_ratio',
-
     'gaze_right_reviewing_offscreen_ratio',
-
     'mouse_comparison_reviewing_activity_ratio',
-
+    'gaze_comparison_reviewing_activity_diff'
     'mouse_comparison_reviewing_time_ratio',
     'mouse_left_reviewing_active_ratio',
-
+    'mouse_right_reviewing_offscreen_ratio',
     'response_A_gaze_focused_engagement_ratio',
     'response_A_gaze_overall_attention_ratio',
     'response_A_gaze_window_006',
@@ -43,7 +38,6 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'response_A_mouse_overall_attention_ratio',
     'response_A_mouse_window_000',
     'response_A_mouse_window_099',
-
     'response_B_gaze_focused_engagement_ratio',
     'response_B_gaze_normalized_avg_char_position',
     'response_B_gaze_overall_attention_ratio',
@@ -59,7 +53,8 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'response_B_mouse_window_033',
     'response_B_mouse_window_037',
     'response_B_mouse_window_039',
-    
+    'response_B_mouse_reading_completion_ratio',
+    'response_A_mouse_reading_completion_ratio',
 ]
 
 
