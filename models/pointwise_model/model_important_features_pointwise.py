@@ -2,7 +2,7 @@
 Pointwise Model Training Pipeline for Likert Score Prediction
 Uses Important Features Dataset
 
-This script trains a Ridge Regressor to predict likert_1 (1-5 scale)
+This script trains a Random Forest Regressor to predict likert_1 (1-5 scale)
 using cross-validation for evaluation.
 """
 
@@ -17,9 +17,8 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_validate, KFold
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import (
     mean_squared_error, mean_absolute_error, r2_score
 )
@@ -44,11 +43,15 @@ CONFIG = {
     'CV_FOLDS': 5,
     'CV_SCORING': ['neg_mean_squared_error', 'neg_mean_absolute_error', 'r2'],
     
-    # Ridge hyperparameters
-    'RIDGE_PARAMS': {
-        'alpha': 1.0,
+    # Random Forest hyperparameters
+    'RF_PARAMS': {
+        'n_estimators': 100,
+        'max_depth': 7,
+        'min_samples_split': 5,
+        'min_samples_leaf': 2,
+        'max_features': 'sqrt',
         'random_state': 49,
-        'max_iter': 1000
+        'n_jobs': -1
     },
 }
 
@@ -63,7 +66,7 @@ def set_random_seeds(seed):
 def load_and_prepare_data(filepath):
     """Load CSV and prepare features and target"""
     print("\n" + "="*80)
-    print("POINTWISE MODEL - IMPORTANT FEATURES (Ridge Regressor)")
+    print("POINTWISE MODEL - IMPORTANT FEATURES (Random Forest Regressor)")
     print("="*80)
     
     # Load data
@@ -114,34 +117,29 @@ def calculate_correlation_metrics(y_true, y_pred):
 
 def train_and_evaluate_model(X, y, config):
     """
-    Train Ridge Regressor with cross-validation
+    Train Random Forest Regressor with cross-validation
     """
     print("\n" + "-"*80)
     print("Training Model")
     print("-"*80)
     
-    # Normalize features (Ridge requires scaling)
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    X_scaled = pd.DataFrame(X_scaled, columns=X.columns, index=X.index)
-    
     # Initialize model
-    ridge = Ridge(**config['RIDGE_PARAMS'])
+    rf = RandomForestRegressor(**config['RF_PARAMS'])
     
     # Cross-validation
     cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
     
-    # Debug: Print fold 1 first row (using unscaled data for readability)
+    # Debug: Print fold 1 first row
     for fold_num, (train_idx, test_idx) in enumerate(cv.split(X, y), 1):
         if fold_num == 1:
-            X_train_orig, X_test_orig = X.iloc[train_idx], X.iloc[test_idx]
+            X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
             y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
-            print_fold_1_first_row(X_train_orig, y_train, X_test_orig, y_test, fold_num, train_idx, test_idx)
+            print_fold_1_first_row(X_train, y_train, X_test, y_test, fold_num, train_idx, test_idx)
             break
     
     # Perform cross-validation
     cv_results = cross_validate(
-        ridge, X_scaled, y,
+        rf, X, y,
         cv=cv,
         scoring=config['CV_SCORING'],
         return_train_score=True,
@@ -169,10 +167,10 @@ def train_and_evaluate_model(X, y, config):
     print("\n" + "-"*80)
     print("Training Final Model on Full Dataset")
     print("-"*80)
-    ridge.fit(X_scaled, y)
+    rf.fit(X, y)
     
     # Make predictions on full dataset for correlation metrics
-    y_pred = ridge.predict(X_scaled)
+    y_pred = rf.predict(X)
     
     # Calculate correlation metrics
     corr_metrics = calculate_correlation_metrics(y, y_pred)
@@ -180,43 +178,38 @@ def train_and_evaluate_model(X, y, config):
     print(f"  Spearman: {corr_metrics['spearman']:.4f} (p-value: {corr_metrics['spearman_pvalue']:.4e})")
     print(f"  Pearson:  {corr_metrics['pearson']:.4f} (p-value: {corr_metrics['pearson_pvalue']:.4e})")
     
-    # Coefficient analysis
-    if hasattr(ridge, 'coef_'):
-        coefficients = pd.DataFrame({
-            'feature': X.columns,
-            'coefficient': ridge.coef_
-        })
-        
-        # Sort by absolute coefficient value
-        coefficients['abs_coefficient'] = coefficients['coefficient'].abs()
-        coefficients = coefficients.sort_values('abs_coefficient', ascending=False)
-        
-        # Save coefficients to CSV
-        import os
-        output_dir = 'feature_importance'
-        os.makedirs(output_dir, exist_ok=True)
-        output_file = f'{output_dir}/coefficients_important_features_pointwise.csv'
-        coefficients[['feature', 'coefficient', 'abs_coefficient']].to_csv(output_file, index=False)
-        print(f"\nCoefficients saved to: {output_file}")
-        
-        # Categorize coefficients
-        threshold = 0.1
-        important = coefficients[coefficients['abs_coefficient'] >= threshold]
-        not_important = coefficients[coefficients['abs_coefficient'] < threshold]
-        
-        print(f"\nImportant Coefficients (|coef| >= {threshold}):")
-        if len(important) > 0:
-            print(important[['feature', 'coefficient']].to_string(index=False))
-        else:
-            print("  None")
-        
-        print(f"\nNot Important Coefficients (|coef| < {threshold}):")
-        if len(not_important) > 0:
-            print(not_important[['feature', 'coefficient']].to_string(index=False))
-        else:
-            print("  None")
+    # Feature importance
+    feature_importance = pd.DataFrame({
+        'feature': X.columns,
+        'importance': rf.feature_importances_
+    }).sort_values('importance', ascending=False)
     
-    return ridge, scaler
+    # Save feature importance to CSV
+    import os
+    output_dir = 'feature_importance'
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = f'{output_dir}/importance_important_features_pointwise.csv'
+    feature_importance.to_csv(output_file, index=False)
+    print(f"\nFeature importance saved to: {output_file}")
+    
+    # Categorize features by importance
+    threshold = 0.05
+    important = feature_importance[feature_importance['importance'] >= threshold]
+    not_important = feature_importance[feature_importance['importance'] < threshold]
+    
+    print(f"\nImportant Features (>={threshold*100}% importance):")
+    if len(important) > 0:
+        print(important.to_string(index=False))
+    else:
+        print("  None")
+    
+    print(f"\nNot Important Features (<{threshold*100}% importance):")
+    if len(not_important) > 0:
+        print(not_important.to_string(index=False))
+    else:
+        print("  None")
+    
+    return rf
 
 # ============================================================================
 # MAIN EXECUTION
@@ -232,7 +225,7 @@ def main():
     X, y = load_and_prepare_data(CONFIG['INPUT_CSV'])
     
     # Train and evaluate model
-    model, scaler = train_and_evaluate_model(X, y, CONFIG)
+    model = train_and_evaluate_model(X, y, CONFIG)
     
     print("\n" + "="*80)
     print("POINTWISE MODEL (IMPORTANT FEATURES) TRAINING COMPLETE")
