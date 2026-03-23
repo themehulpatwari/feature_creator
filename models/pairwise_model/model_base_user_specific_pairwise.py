@@ -75,7 +75,7 @@ def load_and_prepare_data(filepath):
     print(f"Loaded data shape: {df.shape}")
     
     # Text columns to exclude
-    text_columns = ['user_query', 'llm_response_1', 'llm_response_2', 'query_id']
+    text_columns = ['user_query', 'llm_response_1', 'llm_response_2', 'query_id', 'domain']
     
     # Target column
     target_column = 'binary_preference'
