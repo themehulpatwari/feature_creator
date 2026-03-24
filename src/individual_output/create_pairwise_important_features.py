@@ -22,7 +22,7 @@ if 'query_ID' in extracted_df.columns:
 
 # Get columns to drop from extracted (keep only new extracted features)
 drop_cols = ['user_query', 'llm_response_1', 'llm_response_2', 'comparison_type', 
-             'preference', 'likert_1', 'likert_2', 'query_timestamp', 'adjustment']
+             'preference', 'likert_1', 'likert_2', 'query_timestamp', 'adjustment', 'domain']
 # Also drop LLM columns from extracted (we'll keep them from all_metrics)
 llm_cols = [c for c in extracted_df.columns if c.startswith('llm_1_') or c.startswith('llm_2_')]
 drop_cols.extend(llm_cols)
