@@ -49,8 +49,8 @@ text_columns = ['user_query', 'llm_response_1', 'llm_response_2']
 # Target column
 target_column = 'binary_preference'
 
-# Select only important features + text columns + query_id + target
-columns_to_keep = text_columns + ['query_id'] + PAIRWISE_IMPORTANT_FEATURES + [target_column]
+# Select only important features + text columns + query_id + target + domain
+columns_to_keep = text_columns + ['query_id', 'domain'] + PAIRWISE_IMPORTANT_FEATURES + [target_column]
 
 # Only keep columns that exist in the dataframe
 columns_to_keep = [col for col in columns_to_keep if col in df.columns]

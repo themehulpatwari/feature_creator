@@ -181,6 +181,52 @@ def train_and_evaluate_model(X, y, config):
     
     return rf
 
+def generate_oof_labels(X, y, df_original, config, output_filename):
+    """
+    Generate out-of-fold (OOF) predictions and confidence scores.
+    Each sample is predicted exactly once (when it is in the test fold).
+    Saves the original dataframe augmented with 'oof_prediction' and
+    'oof_confidence' (P(class=1)) columns to pairwise_labeled_output/.
+    """
+    print("\n" + "-"*80)
+    print("Generating Out-of-Fold (OOF) Labels")
+    print("-"*80)
+
+    n_samples = len(X)
+    oof_predictions = np.full(n_samples, np.nan)
+    oof_confidence  = np.full(n_samples, np.nan)
+
+    cv = KFold(n_splits=config['CV_FOLDS'], shuffle=True, random_state=config['RANDOM_STATE'])
+
+    for fold_num, (train_idx, test_idx) in enumerate(cv.split(X, y), 1):
+        X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
+        y_train         = y.iloc[train_idx]
+
+        rf_fold = RandomForestClassifier(**config['RF_PARAMS'])
+        rf_fold.fit(X_train, y_train)
+
+        preds   = rf_fold.predict(X_test)
+        probas  = rf_fold.predict_proba(X_test)[:, 1]  # P(class=1)
+
+        oof_predictions[test_idx] = preds
+        oof_confidence[test_idx]  = probas
+        print(f"  Fold {fold_num}: predicted {len(test_idx)} samples")
+
+    # Attach OOF columns to the original dataframe
+    df_out = df_original.copy()
+    df_out['oof_prediction'] = oof_predictions
+    df_out['oof_confidence'] = oof_confidence
+
+    # Save
+    output_dir = 'pairwise_labeled_output'
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, output_filename)
+    df_out.to_csv(output_path, index=False)
+    print(f"\nOOF-labeled CSV saved to: {output_path}")
+    print(f"  Total rows: {len(df_out)} | NaN predictions: {np.isnan(oof_predictions).sum()}")
+
+    return df_out
+
 # ============================================================================
 # MAIN EXECUTION
 # ============================================================================
@@ -193,9 +239,16 @@ def main():
     
     # Load and prepare data
     X, y = load_and_prepare_data(CONFIG['INPUT_CSV'])
+
+    # Load original dataframe (for augmented output)
+    df_original = pd.read_csv(CONFIG['INPUT_CSV'])
+    df_original = df_original.dropna(subset=['binary_preference'])
     
     # Train and evaluate model
     model = train_and_evaluate_model(X, y, CONFIG)
+
+    # Generate OOF labels
+    generate_oof_labels(X, y, df_original, CONFIG, 'base_all_metrics_pairwise_labeled.csv')
     
     print("\n" + "="*80)
     print("PAIRWISE MODEL TRAINING COMPLETE")
