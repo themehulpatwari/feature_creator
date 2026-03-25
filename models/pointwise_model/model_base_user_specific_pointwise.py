@@ -75,7 +75,7 @@ def load_and_prepare_data(filepath):
     print(f"Loaded data shape: {df.shape}")
     
     # Text columns to exclude
-    text_columns = ['user_query', 'llm_response_1', 'query_id', 'domain']
+    text_columns = ['user_query', 'llm_response_1', 'query_id', 'domain', 'preference']
     
     # Target column
     target_column = 'likert_1'
@@ -93,9 +93,6 @@ def load_and_prepare_data(filepath):
                    if col not in text_columns and col != target_column]
     
     X = df[feature_cols].copy()
-    # Fill missing preference with -1 (sentinel: no pairwise comparison; valid values are 1 and 2)
-    if 'preference' in X.columns:
-        X['preference'] = X['preference'].fillna(-1)
     y = df[target_column].copy()
     
     # Handle any remaining NaN values in features

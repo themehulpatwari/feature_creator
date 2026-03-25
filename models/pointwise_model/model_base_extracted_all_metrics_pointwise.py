@@ -87,7 +87,7 @@ def load_and_prepare_data(filepath, config):
     text_columns = ['user_query', 'llm_response_1']
     
     # Non-feature columns to exclude (text + identifiers)
-    excluded_columns = text_columns + ['user_id', 'query_id', 'domain']
+    excluded_columns = text_columns + ['user_id', 'query_id', 'domain', 'preference']
     
     # Target column
     target_column = 'likert_1'
@@ -111,9 +111,6 @@ def load_and_prepare_data(filepath, config):
         print(f"Excluded {len(window_cols)} window features")
     
     X = df[feature_cols].copy()
-    # Fill missing preference with -1 (sentinel: no pairwise comparison; valid values are 1 and 2)
-    if 'preference' in X.columns:
-        X['preference'] = X['preference'].fillna(-1)
     y = df[target_column].copy()
     
     # Handle any remaining NaN values in features
