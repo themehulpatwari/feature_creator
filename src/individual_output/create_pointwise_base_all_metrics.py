@@ -17,7 +17,7 @@ print(f"After filtering for pointwise: {df.shape}")
 
 # Drop specified columns (keeping user_id and query_id)
 columns_to_drop = ['comparison_type', 'task_id', 
-                   'likert_2', 'preference', 'query_timestamp', 'llm_response_2']
+                   'likert_2', 'query_timestamp', 'llm_response_2']
 
 # Drop all llm_2_* columns
 llm_2_cols = [col for col in df.columns if col.startswith('llm_2_')]

@@ -94,6 +94,9 @@ def load_and_prepare_data(filepath):
                    if col not in excluded_columns and col != target_column]
     
     X = df[feature_cols].copy()
+    # Fill missing preference with -1 (sentinel: no pairwise comparison; valid values are 1 and 2)
+    if 'preference' in X.columns:
+        X['preference'] = X['preference'].fillna(-1)
     y = df[target_column].copy()
     
     print(f"Samples: {len(X)} | Features: {X.shape[1]}")

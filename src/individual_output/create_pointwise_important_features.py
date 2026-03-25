@@ -46,7 +46,7 @@ text_columns = ['user_query', 'llm_response_1']
 target_column = 'likert_1'
 
 # Select only important features + text columns + user_id + query_id + target + domain
-columns_to_keep = text_columns + ['user_id', 'query_id', 'domain'] + POINTWISE_IMPORTANT_FEATURES + [target_column]
+columns_to_keep = text_columns + ['user_id', 'query_id', 'domain', 'preference'] + POINTWISE_IMPORTANT_FEATURES + [target_column]
 
 # Only keep columns that exist in the dataframe
 columns_to_keep = [col for col in columns_to_keep if col in df.columns]
