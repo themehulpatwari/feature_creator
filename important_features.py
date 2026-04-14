@@ -17,44 +17,147 @@ PAIRWISE_IMPORTANT_FEATURES = [
     'response_right',
     'total_entries_left',
     'total_entries_right',
-    'cross_modality_left_reviewing_duration_ratio_gaze_mouse',
-    'gaze_comparison_reviewing_time_ratio',
-    'gaze_left_reviewing_offscreen_ratio',
-    'gaze_left_reviewing_engaged_time_s',
-    'gaze_right_reviewing_active_ratio',
-    'gaze_right_reviewing_offscreen_ratio',
-    'mouse_comparison_reviewing_activity_ratio',
-    'gaze_comparison_reviewing_activity_diff'
-    'mouse_comparison_reviewing_time_ratio',
-    'mouse_left_reviewing_active_ratio',
-    'mouse_right_reviewing_offscreen_ratio',
-    'response_A_gaze_focused_engagement_ratio',
-    'response_A_gaze_overall_attention_ratio',
-    'response_A_gaze_window_006',
-    'response_A_gaze_window_007',
-    'response_A_gaze_window_008',
-    'response_A_mouse_focused_engagement_ratio',
-    'response_A_mouse_normalized_char_position_variance',
-    'response_A_mouse_overall_attention_ratio',
-    'response_A_mouse_window_000',
-    'response_A_mouse_window_099',
-    'response_B_gaze_focused_engagement_ratio',
-    'response_B_gaze_normalized_avg_char_position',
-    'response_B_gaze_overall_attention_ratio',
-    'response_B_gaze_window_000',
-    'response_B_gaze_window_006',
-    'response_B_gaze_window_014',
-    'response_B_mouse_data_points',
-    'response_B_mouse_focused_engagement_ratio',
-    'response_B_mouse_normalized_avg_char_position',
-    'response_B_mouse_overall_attention_ratio',
-    'response_B_mouse_window_022',
-    'response_B_mouse_window_031',
-    'response_B_mouse_window_033',
-    'response_B_mouse_window_037',
-    'response_B_mouse_window_039',
-    'response_B_mouse_reading_completion_ratio',
-    'response_A_mouse_reading_completion_ratio',
+    'cross_modality_left_reviewing_duration_ratio_gaze_mouse', # Both
+    'gaze_comparison_reviewing_time_ratio', # Gaze
+    'gaze_left_reviewing_offscreen_ratio', # Gaze
+    'gaze_left_reviewing_engaged_time_s', # Gaze
+    'gaze_right_reviewing_active_ratio', # Gaze
+    'gaze_right_reviewing_offscreen_ratio', # Gaze
+    'mouse_comparison_reviewing_activity_ratio', # Mouse
+    'gaze_comparison_reviewing_activity_diff' # Gaze
+    'mouse_comparison_reviewing_time_ratio', # Mouse
+    'mouse_left_reviewing_active_ratio', # Mouse
+    'mouse_right_reviewing_offscreen_ratio', # Mouse
+    'response_A_gaze_focused_engagement_ratio', # Gaze
+    'response_A_gaze_overall_attention_ratio', # Gaze
+    'response_A_gaze_window_006', # Gaze
+    'response_A_gaze_window_007', # Gaze
+    'response_A_gaze_window_008', # Gaze
+    'response_A_mouse_focused_engagement_ratio', # Mouse
+    'response_A_mouse_normalized_char_position_variance', # Mouse
+    'response_A_mouse_overall_attention_ratio', # Mouse
+    'response_A_mouse_window_000', # Mouse
+    'response_A_mouse_window_099', # Mouse
+    'response_B_gaze_focused_engagement_ratio', # Gaze
+    'response_B_gaze_normalized_avg_char_position', # Gaze
+    'response_B_gaze_overall_attention_ratio', # Gaze
+    'response_B_gaze_window_000', # Gaze
+    'response_B_gaze_window_006', # Gaze
+    'response_B_gaze_window_014', # Gaze
+    'response_B_mouse_data_points', # Mouse
+    'response_B_mouse_focused_engagement_ratio', # Mouse
+    'response_B_mouse_normalized_avg_char_position', # Mouse
+    'response_B_mouse_overall_attention_ratio', # Mouse
+    'response_B_mouse_window_022', # Mouse
+    'response_B_mouse_window_031', # Mouse
+    'response_B_mouse_window_033', # Mouse
+    'response_B_mouse_window_037', # Mouse
+    'response_B_mouse_window_039', # Mouse
+    'response_B_mouse_reading_completion_ratio', # Mouse
+    'response_A_mouse_reading_completion_ratio', # Mouse
+]
+
+
+PAIRWISE_GAZE_IMPORTANT = [
+    'cross_modality_left_reviewing_duration_ratio_gaze_mouse', # Both
+    'gaze_comparison_reviewing_time_ratio', # Gaze
+    'gaze_left_reviewing_offscreen_ratio', # Gaze
+    'gaze_left_reviewing_engaged_time_s', # Gaze
+    'gaze_right_reviewing_active_ratio', # Gaze
+    'gaze_right_reviewing_offscreen_ratio', # Gaze
+    'gaze_comparison_reviewing_activity_diff', # Gaze
+    'response_A_gaze_focused_engagement_ratio', # Gaze
+    'response_A_gaze_overall_attention_ratio', # Gaze
+    'response_A_gaze_window_006', # Gaze
+    'response_A_gaze_window_007', # Gaze
+    'response_A_gaze_window_008', # Gaze
+    'response_B_gaze_focused_engagement_ratio', # Gaze
+    'response_B_gaze_normalized_avg_char_position', # Gaze
+    'response_B_gaze_overall_attention_ratio', # Gaze
+    'response_B_gaze_window_000', # Gaze
+    'response_B_gaze_window_006', # Gaze
+    'response_B_gaze_window_014', # Gaze
+]
+
+
+PAIRWISE_MOUSE_IMPORTANT = [
+    'cross_modality_left_reviewing_duration_ratio_gaze_mouse', # Both
+    'mouse_comparison_reviewing_activity_ratio', # Mouse
+    'mouse_comparison_reviewing_time_ratio', # Mouse
+    'mouse_left_reviewing_active_ratio', # Mouse
+    'mouse_right_reviewing_offscreen_ratio', # Mouse
+    'response_A_mouse_focused_engagement_ratio', # Mouse
+    'response_A_mouse_normalized_char_position_variance', # Mouse
+    'response_A_mouse_overall_attention_ratio', # Mouse
+    'response_A_mouse_window_000', # Mouse
+    'response_A_mouse_window_099', # Mouse
+    'response_B_mouse_data_points', # Mouse
+    'response_B_mouse_focused_engagement_ratio', # Mouse
+    'response_B_mouse_normalized_avg_char_position', # Mouse
+    'response_B_mouse_overall_attention_ratio', # Mouse
+    'response_B_mouse_window_022', # Mouse
+    'response_B_mouse_window_031', # Mouse
+    'response_B_mouse_window_033', # Mouse
+    'response_B_mouse_window_037', # Mouse
+    'response_B_mouse_window_039', # Mouse
+    'response_B_mouse_reading_completion_ratio', # Mouse
+    'response_A_mouse_reading_completion_ratio', # Mouse
+]
+
+
+POINTWISE_GAZE_IMPORTANT = [
+    'cross_modality_composing_activity_ratio_gaze_mouse', # Both
+    'gaze_active_time_reviewing_s', # Gaze
+    'gaze_offscreen_time_composing_s', # Gaze
+    'gaze_reviewing_duration_s', # Gaze
+    'gaze_thinking_time_s', # Gaze
+    'response_A_gaze_data_points', # Gaze
+    'response_A_gaze_normalized_avg_char_position', # Gaze
+    'response_A_gaze_window_001', # Gaze
+    'response_A_gaze_window_004', # Gaze
+    'response_A_gaze_window_006', # Gaze
+    'response_A_gaze_window_007', # Gaze
+    'response_A_gaze_window_009', # Gaze
+    'response_A_gaze_window_010', # Gaze
+    'response_A_gaze_window_014', # Gaze
+    'response_A_gaze_window_016', # Gaze
+    'response_A_gaze_window_018', # Gaze
+    'response_A_gaze_window_019', # Gaze
+    'response_A_gaze_window_023', # Gaze
+    'response_A_gaze_window_026', # Gaze
+    'response_A_gaze_window_038', # Gaze
+    'response_A_gaze_window_061', # Gaze
+    'response_A_gaze_window_067', # Gaze
+    'response_A_gaze_window_068', # Gaze
+    'response_A_gaze_window_069', # Gaze
+    'response_A_gaze_window_071', # Gaze
+    'response_A_gaze_window_073', # Gaze
+    'response_A_gaze_window_075', # Gaze
+    'response_A_gaze_window_092', # Gaze
+]
+
+
+POINTWISE_MOUSE_IMPORTANT = [
+    'cross_modality_composing_activity_ratio_gaze_mouse', # Both
+    'mouse_offscreen_time_composing_s', # Mouse
+    'mouse_reviewing_composing_activity_ratio', # Mouse
+    'response_A_mouse_normalized_char_position_variance', # Mouse
+    'response_A_mouse_window_019', # Mouse
+    'response_A_mouse_window_021', # Mouse
+    'response_A_mouse_window_023', # Mouse
+    'response_A_mouse_window_026', # Mouse
+    'response_A_mouse_window_028', # Mouse
+    'response_A_mouse_window_034', # Mouse
+    'response_A_mouse_window_035', # Mouse
+    'response_A_mouse_window_042', # Mouse
+    'response_A_mouse_window_047', # Mouse
+    'response_A_mouse_window_054', # Mouse
+    'response_A_mouse_window_055', # Mouse
+    'response_A_mouse_window_056', # Mouse
+    'response_A_mouse_window_072', # Mouse
+    'response_A_mouse_window_073', # Mouse
+    'response_A_mouse_window_084', # Mouse
+    'response_A_mouse_window_098', # Mouse
 ]
 
 
@@ -68,51 +171,51 @@ POINTWISE_IMPORTANT_FEATURES = [
     'camera_green',
     'response_left',
     'total_entries_left',
-    'cross_modality_composing_activity_ratio_gaze_mouse',
-    'gaze_active_time_reviewing_s',
-    'gaze_offscreen_time_composing_s',
-    'gaze_reviewing_duration_s',
-    'gaze_thinking_time_s',
-    'mouse_offscreen_time_composing_s',
-    'mouse_reviewing_composing_activity_ratio',
-    'response_A_gaze_data_points',
-    'response_A_gaze_normalized_avg_char_position',
-    'response_A_gaze_window_001',
-    'response_A_gaze_window_004',
-    'response_A_gaze_window_006',
-    'response_A_gaze_window_007',
-    'response_A_gaze_window_009',
-    'response_A_gaze_window_010',
-    'response_A_gaze_window_014',
-    'response_A_gaze_window_016',
-    'response_A_gaze_window_018',
-    'response_A_gaze_window_019',
-    'response_A_gaze_window_023',
-    'response_A_gaze_window_026',
-    'response_A_gaze_window_038',
-    'response_A_gaze_window_061',
-    'response_A_gaze_window_067',
-    'response_A_gaze_window_068',
-    'response_A_gaze_window_069',
-    'response_A_gaze_window_071',
-    'response_A_gaze_window_073',
-    'response_A_gaze_window_075',
-    'response_A_gaze_window_092',
-    'response_A_mouse_normalized_char_position_variance',
-    'response_A_mouse_window_019',
-    'response_A_mouse_window_021',
-    'response_A_mouse_window_023',
-    'response_A_mouse_window_026',
-    'response_A_mouse_window_028',
-    'response_A_mouse_window_034',
-    'response_A_mouse_window_035',
-    'response_A_mouse_window_042',
-    'response_A_mouse_window_047',
-    'response_A_mouse_window_054',
-    'response_A_mouse_window_055',
-    'response_A_mouse_window_056',
-    'response_A_mouse_window_072',
-    'response_A_mouse_window_073',
-    'response_A_mouse_window_084',
-    'response_A_mouse_window_098',
+    'cross_modality_composing_activity_ratio_gaze_mouse', # Both
+    'gaze_active_time_reviewing_s', # Gaze
+    'gaze_offscreen_time_composing_s', # Gaze
+    'gaze_reviewing_duration_s', # Gaze
+    'gaze_thinking_time_s', # Gaze
+    'mouse_offscreen_time_composing_s', # Mouse
+    'mouse_reviewing_composing_activity_ratio', # Mouse
+    'response_A_gaze_data_points', # Gaze
+    'response_A_gaze_normalized_avg_char_position', # Gaze
+    'response_A_gaze_window_001', # Gaze
+    'response_A_gaze_window_004', # Gaze
+    'response_A_gaze_window_006', # Gaze
+    'response_A_gaze_window_007', # Gaze
+    'response_A_gaze_window_009', # Gaze
+    'response_A_gaze_window_010', # Gaze
+    'response_A_gaze_window_014', # Gaze
+    'response_A_gaze_window_016', # Gaze
+    'response_A_gaze_window_018', # Gaze
+    'response_A_gaze_window_019', # Gaze
+    'response_A_gaze_window_023', # Gaze
+    'response_A_gaze_window_026', # Gaze
+    'response_A_gaze_window_038', # Gaze
+    'response_A_gaze_window_061', # Gaze
+    'response_A_gaze_window_067', # Gaze
+    'response_A_gaze_window_068', # Gaze
+    'response_A_gaze_window_069', # Gaze
+    'response_A_gaze_window_071', # Gaze
+    'response_A_gaze_window_073', # Gaze
+    'response_A_gaze_window_075', # Gaze
+    'response_A_gaze_window_092', # Gaze
+    'response_A_mouse_normalized_char_position_variance', # Mouse
+    'response_A_mouse_window_019', # Mouse
+    'response_A_mouse_window_021', # Mouse
+    'response_A_mouse_window_023', # Mouse
+    'response_A_mouse_window_026', # Mouse
+    'response_A_mouse_window_028', # Mouse
+    'response_A_mouse_window_034', # Mouse
+    'response_A_mouse_window_035', # Mouse
+    'response_A_mouse_window_042', # Mouse
+    'response_A_mouse_window_047', # Mouse
+    'response_A_mouse_window_054', # Mouse
+    'response_A_mouse_window_055', # Mouse
+    'response_A_mouse_window_056', # Mouse
+    'response_A_mouse_window_072', # Mouse
+    'response_A_mouse_window_073', # Mouse
+    'response_A_mouse_window_084', # Mouse
+    'response_A_mouse_window_098', # Mouse
 ]
